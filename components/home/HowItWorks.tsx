@@ -6,17 +6,17 @@ export function HowItWorks() {
     <section id="how-it-works" className="border-t border-white/10 py-12">
       <Container>
         <h2 className="text-xl font-semibold text-slate-50 sm:text-2xl">
-          Cómo funciona debajo del capó
+          How it works under the hood
         </h2>
 
         <div className="mt-6 grid gap-6 md:grid-cols-2">
           <div className="space-y-3 text-sm text-slate-300">
             <ol className="space-y-2 list-decimal list-inside">
               <li>
-                El frontend (Next.js) llama a un backend de RoxiumLabs via REST.
+                The frontend (Next.js) calls a RoxiumLabs backend via REST.
               </li>
               <li>
-                El backend usa el SDK de Arkiv para crear entidades:
+                The backend uses the Arkiv SDK to create entities:
                 <span className="font-mono text-emerald-200">
                   {" "}
                   dao, user-on-dao, proposal, task
@@ -24,17 +24,17 @@ export function HowItWorks() {
                 .
               </li>
               <li>
-                Cada entidad se guarda con metadatos: status, deadlines, ids y
-                relaciones (daoKey / proposalKey).
+                Each entity is stored with metadata: status, deadlines, ids and
+                relationships (daoKey / proposalKey).
               </li>
               <li>
-                El frontend consulta vistas agregadas: un board por DAO, detalle
-                por proposal, etc.
+                The frontend queries aggregated views: a board per DAO, proposal
+                detail, etc.
               </li>
             </ol>
             <p className="text-xs text-slate-400">
-              Todo esto sin exponer la private key ni el RPC de Arkiv en el
-              navegador. El front sólo ve JSON amigable.
+              All of this without exposing the private key or the Arkiv RPC in
+              the browser. The frontend only sees friendly JSON.
             </p>
           </div>
 
@@ -46,16 +46,16 @@ export function HowItWorks() {
               Dev flow
             </p>
             <pre className="whitespace-pre-wrap">
-              {`// 1) Crear DAO
+              {`// 1) Create DAO
 POST /api/arkiv/daos
 
-// 2) Crear proposal para ese DAO
+// 2) Create proposal for that DAO
 POST /api/arkiv/proposals
 
-// 3) Crear tasks vinculadas
+// 3) Create linked tasks
 POST /api/arkiv/tasks
 
-// 4) Leer todo en un board
+// 4) Read everything in a board
 GET /api/arkiv/daos/:daoKey/board`}
             </pre>
           </div>

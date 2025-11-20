@@ -5,22 +5,22 @@ const FEATURES = [
   {
     title: "DAO-first, on-chain",
     description:
-      "Cada DAO, proposal y task se guarda como entidad Arkiv, manteniendo el historial y la estructura en la capa de datos.",
+      "Each DAO, proposal and task is stored as an Arkiv entity, keeping history and structure at the data layer.",
   },
   {
-    title: "TTL y deadlines reales",
+    title: "Real TTL and deadlines",
     description:
-      "Las proposals y tasks se crean con expiración (TTL), alineando los deadlines del equipo con el tiempo de vida on-chain.",
+      "Proposals and tasks are created with expiration (TTL), aligning team deadlines with on-chain lifetime.",
   },
   {
-    title: "Lectura segura desde el frontend",
+    title: "Safe reads from the frontend",
     description:
-      "El frontend habla con un backend que firma y escribe en Arkiv; desde Next.js sólo hacés fetch de tus DAOs/proposals/tasks.",
+      "The frontend talks to a backend that signs and writes to Arkiv; from Next.js you only fetch your DAOs/proposals/tasks.",
   },
   {
-    title: "Consultas y panel global",
+    title: "Queries and global board",
     description:
-      "Listá todas tus DAOs, proposals y tasks y construí vistas tipo Kanban, boards o dashboards personalizados.",
+      "List all your DAOs, proposals and tasks and build Kanban-style views, boards or custom dashboards.",
   },
 ];
 
@@ -29,13 +29,13 @@ export function Features() {
     <section id="features" className="py-12">
       <Container>
         <h2 className="text-xl font-semibold text-slate-50 sm:text-2xl">
-          ¿Qué problema resuelve este panel?
+          What problem does this board solve?
         </h2>
         <p className="mt-3 max-w-2xl text-sm text-slate-300">
-          Muchas DAOs viven en docs, Discord y planillas. Acá el objetivo es que
-          la estructura operativa quede anclada en Arkiv, pero sea usable para
-          human@s: crear, leer y conectar DAOs, propuestas y tareas desde un
-          frontend moderno.
+          Many DAOs live in docs, Discord and spreadsheets. Here the goal is to
+          anchor the operational structure in Arkiv, but keep it usable for
+          human beings: create, read and connect DAOs, proposals and tasks from
+          a modern frontend.
         </p>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2">

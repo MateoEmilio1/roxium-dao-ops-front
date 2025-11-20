@@ -4,7 +4,6 @@ import { useDaos } from "@/hooks/useDaos";
 import { DaoCreateForm } from "@/components/dao/DaoCreateForm";
 import { DaoList } from "@/components/dao/DaoList";
 
-// Si estos no existen, podemos reemplazar por un <div className="mx-auto max-w-5xl px-4">...
 import { Container } from "@/components/common/Container";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
@@ -26,12 +25,12 @@ export default function DaosPage() {
               Arkiv · Mendoza Testnet
             </p>
             <h1 className="text-2xl font-semibold text-slate-50 sm:text-3xl">
-              DAOs registradas en Roxium DAO Ops
+              DAOs registered in Roxium DAO Ops
             </h1>
             <p className="max-w-2xl text-sm text-slate-300">
-              Desde esta vista podés crear nuevas DAOs y explorar las que ya
-              están persistidas en Arkiv a través del backend de RoxiumLabs.
-              Cada DAO actúa como un contenedor de proposals y tasks on-chain.
+              From this view you can create new DAOs and explore the ones
+              already persisted on Arkiv through the RoxiumLabs backend. Each
+              DAO acts as a container for on-chain proposals and tasks.
             </p>
           </div>
 

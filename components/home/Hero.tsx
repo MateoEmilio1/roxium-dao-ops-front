@@ -13,28 +13,31 @@ export function Hero() {
             </p>
 
             <h1 className="text-3xl font-semibold tracking-tight text-slate-50 sm:text-4xl md:text-5xl">
-              Orquestá tus DAOs, propuestas y tasks{" "}
-              <span className="text-emerald-300">sobre Arkiv</span>.
+              Orchestrate your DAOs, proposals and tasks{" "}
+              <span className="text-emerald-300">on top of Arkiv</span>.
             </h1>
 
             <p className="text-sm leading-relaxed text-slate-300 sm:text-base">
-              Este panel convierte la estructura clásica{" "}
+              This board turns the classic{" "}
               <span className="font-mono text-emerald-200">
                 DAO → Proposal → Task
               </span>{" "}
-              en entidades on-chain usando Arkiv. Cada decisión, tarea y rol
-              queda registrada con TTL, queries avanzadas y eventos en tiempo
-              real.
+              structure into on-chain entities using Arkiv. Every decision, task
+              and role is recorded with TTL, advanced queries and real-time
+              events.
             </p>
 
             <ul className="space-y-2 text-sm text-slate-300">
-              <li>• Creá DAOs y miembros sin exponer claves en el frontend.</li>
               <li>
-                • Definí propuestas con deadlines on-chain y TTL explícito.
+                • Create DAOs and memberships without exposing keys in the
+                frontend.
               </li>
               <li>
-                • Rompé tu roadmap en tasks trackeables y consultables por
-                Arkiv.
+                • Define proposals with on-chain deadlines and explicit TTL.
+              </li>
+              <li>
+                • Break your roadmap into trackable tasks, fully queryable
+                through Arkiv.
               </li>
             </ul>
 
@@ -43,13 +46,13 @@ export function Hero() {
                 href="/daos"
                 className="rounded-md bg-emerald-400 px-4 py-2 text-sm font-medium text-black shadow-md shadow-emerald-500/30 hover:bg-emerald-300"
               >
-                Empezar a construir
+                Start building
               </a>
               <a
                 href="#how-it-works"
                 className="rounded-md border border-slate-600 px-4 py-2 text-sm font-medium text-slate-200 hover:border-emerald-400/70 hover:text-emerald-200"
               >
-                Ver cómo funciona
+                See how it works
               </a>
             </div>
           </div>
@@ -58,11 +61,11 @@ export function Hero() {
             <div className="rounded-xl border border-emerald-500/40 bg-black/40 p-4 shadow-[0_0_60px_-30px_rgba(16,185,129,0.8)]">
               <pre className="max-h-80 overflow-auto text-xs text-emerald-100">
                 {`dao: Roxium DAO Ops
-  ├─ proposal: "Daily standup a las 9:30?"
-  │    ├─ task: "Actualizar calendario"
-  │    └─ task: "Avisar en canal #dev"
-  └─ proposal: "Nueva política de PR review"
-       └─ task: "Configurar reglas en GitHub"
+  ├─ proposal: "Daily standup at 9:30?"
+  │    ├─ task: "Update calendar"
+  │    └─ task: "Notify in #dev channel"
+  └─ proposal: "New PR review policy"
+       └─ task: "Configure rules in GitHub"
 
 storage: Arkiv · Mendoza Testnet
 TTL-aware · Queryable · Subscribable`}

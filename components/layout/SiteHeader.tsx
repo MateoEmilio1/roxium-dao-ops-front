@@ -21,10 +21,10 @@ export function SiteHeader() {
               Features
             </a>
             <a href="#how-it-works" className="text-slate-300 hover:text-white">
-              Cómo funciona
+              How it works
             </a>
             <a href="#dev" className="text-emerald-300 hover:text-emerald-200">
-              Para devs
+              For devs
             </a>
           </nav>
         </div>

@@ -19,9 +19,9 @@ export function DaoBoardHeader({ dao }: DaoBoardHeaderProps) {
     return (
       <Card className="border-white/10 bg-black/40">
         <CardHeader>
-          <CardTitle className="text-base">DAO no encontrada</CardTitle>
+          <CardTitle className="text-base">DAO not found</CardTitle>
           <CardDescription className="text-xs">
-            No pudimos cargar los datos del DAO desde Arkiv.
+            We couldn&apos;t load this DAO&apos;s data from Arkiv.
           </CardDescription>
         </CardHeader>
       </Card>
@@ -35,7 +35,7 @@ export function DaoBoardHeader({ dao }: DaoBoardHeaderProps) {
     <Card className="border-white/10 bg-black/40">
       <CardHeader className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <CardTitle className="text-xl text-slate-50 flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2 text-xl text-slate-50">
             {payload.name}
             <Badge
               variant="outline"
@@ -45,15 +45,15 @@ export function DaoBoardHeader({ dao }: DaoBoardHeaderProps) {
             </Badge>
           </CardTitle>
           <CardDescription className="text-xs text-slate-300">
-            {payload.description ?? "DAO sin descripción"}
+            {payload.description ?? "DAO without description"}
           </CardDescription>
         </div>
         <div className="space-y-1 text-right text-[11px] text-slate-400">
-          <p className="font-mono break-all">{dao.entityKey}</p>
+          <p className="break-all font-mono">{dao.entityKey}</p>
           {createdAt && (
             <p>
-              Creado:{" "}
-              {createdAt.toLocaleString("es-AR", {
+              Created:{" "}
+              {createdAt.toLocaleString("en-US", {
                 dateStyle: "short",
                 timeStyle: "short",
               })}
@@ -66,8 +66,8 @@ export function DaoBoardHeader({ dao }: DaoBoardHeaderProps) {
       </CardHeader>
       <CardContent>
         <p className="text-xs text-slate-400">
-          Este board agrupa <strong>proposals</strong> y <strong>tasks</strong>{" "}
-          que viven on-chain en Arkiv.
+          This board groups <strong>proposals</strong> and{" "}
+          <strong>tasks</strong> that live on-chain in Arkiv.
         </p>
       </CardContent>
     </Card>

@@ -47,20 +47,20 @@ export function DaoCreateForm({ onCreated }: DaoCreateFormProps) {
   return (
     <Card className="border-white/10 bg-black/40">
       <CardHeader>
-        <CardTitle className="text-base">Crear nuevo DAO</CardTitle>
+        <CardTitle className="text-base">Create new DAO</CardTitle>
         <CardDescription className="text-xs">
-          Definí el espacio donde se van a agrupar propuestas y tareas
-          operativas. Cada DAO se persiste como una entidad en Arkiv.
+          Define the space where proposals and operational tasks will be
+          grouped. Each DAO is persisted as an entity in Arkiv.
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-3">
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-slate-200">
-              Nombre del DAO
+              DAO name
             </label>
             <Input
-              placeholder="Ej: Roxium Core Contributors"
+              placeholder="E.g.: Roxium Core Contributors"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -68,20 +68,18 @@ export function DaoCreateForm({ onCreated }: DaoCreateFormProps) {
 
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-slate-200">
-              Descripción (opcional)
+              Description (optional)
             </label>
             <Textarea
               rows={3}
-              placeholder="¿Cuál es el propósito de este DAO? ¿Qué decisiones se toman acá?"
+              placeholder="What is the purpose of this DAO? What decisions are made here?"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
 
           {error && (
-            <p className="text-xs text-red-400">
-              Error al crear el DAO: {error}
-            </p>
+            <p className="text-xs text-red-400">Error creating DAO: {error}</p>
           )}
         </CardContent>
         <CardFooter>
@@ -90,7 +88,7 @@ export function DaoCreateForm({ onCreated }: DaoCreateFormProps) {
             disabled={loading || !name.trim()}
             className="w-full sm:w-auto"
           >
-            {loading ? "Creando DAO..." : "Crear DAO"}
+            {loading ? "Creating DAO..." : "Create DAO"}
           </Button>
         </CardFooter>
       </form>

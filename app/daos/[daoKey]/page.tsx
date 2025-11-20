@@ -17,20 +17,20 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 
 export default function DaoBoardPage() {
-  // ✅ En app router usamos useParams en componentes client
+  // ✅ In the app router we use useParams inside client components
   const params = useParams<{ daoKey?: string }>();
   const daoKey = params.daoKey ?? null;
 
-  // DAO + proposals + tasks desde el backend / Arkiv
+  // DAO + proposals + tasks from the backend / Arkiv
   const { dao, proposals, tasks, loading, error, refetch } =
     useDaoBoard(daoKey);
 
-  // Sólo guardamos lo que el user selecciona explícitamente
+  // We only store what the user explicitly selects
   const [userSelectedProposalKey, setUserSelectedProposalKey] = useState<
     string | null
   >(null);
 
-  // Proposal seleccionada (user → primera → null)
+  // Selected proposal (user → first → null)
   const selectedProposalKey = useMemo<string | null>(() => {
     if (userSelectedProposalKey) return userSelectedProposalKey;
     if (proposals.length > 0) {
@@ -39,7 +39,7 @@ export default function DaoBoardPage() {
     return null;
   }, [userSelectedProposalKey, proposals]);
 
-  // Tasks filtradas por proposalKey
+  // Tasks filtered by proposalKey
   const tasksForSelectedProposal = useMemo(
     () =>
       selectedProposalKey
@@ -54,7 +54,7 @@ export default function DaoBoardPage() {
     await refetch();
   }
 
-  // Si no hay daoKey en la URL
+  // If there's no daoKey in the URL
   if (!daoKey) {
     return (
       <div className="flex min-h-screen flex-col bg-[#050816] text-slate-100">
@@ -62,7 +62,7 @@ export default function DaoBoardPage() {
         <main className="flex-1 py-8">
           <Container>
             <p className="text-sm text-red-400">
-              No se encontró el parámetro <code>daoKey</code> en la URL.
+              The <code>daoKey</code> parameter was not found in the URL.
             </p>
           </Container>
         </main>
@@ -86,26 +86,26 @@ export default function DaoBoardPage() {
               DAO Board
             </h1>
             <p className="max-w-2xl text-sm text-slate-300">
-              Visualizá y administrá las proposals y tasks de este DAO. Todo se
-              persiste en Arkiv a través del backend de RoxiumLabs.
+              View and manage this DAO&apos;s proposals and tasks. Everything is
+              persisted in Arkiv through the RoxiumLabs backend.
             </p>
           </div>
 
           {!hasDao && loading && (
             <p className="mb-4 text-xs text-slate-400">
-              Cargando información del DAO desde Arkiv…
+              Loading DAO information from Arkiv…
             </p>
           )}
 
           {!hasDao && !loading && !error && (
             <p className="mb-4 text-xs text-red-400">
-              No se encontró información del DAO en Arkiv.
+              No DAO information was found in Arkiv.
             </p>
           )}
 
           {error && (
             <p className="mb-4 text-xs text-red-400">
-              Error al cargar el board: {error}
+              Error loading board: {error}
             </p>
           )}
 
@@ -116,10 +116,10 @@ export default function DaoBoardPage() {
               </div>
 
               <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.2fr)_minmax(0,1.1fr)]">
-                {/* Columna 1: Crear Proposal */}
+                {/* Column 1: Create Proposal */}
                 <ProposalCreateForm daoKey={daoKey} onCreated={handleReload} />
 
-                {/* Columna 2: Lista de Proposals */}
+                {/* Column 2: Proposal list */}
                 <ProposalList
                   proposals={proposals}
                   loading={loading}
@@ -129,7 +129,7 @@ export default function DaoBoardPage() {
                   onReload={handleReload}
                 />
 
-                {/* Columna 3: Tasks de la proposal seleccionada */}
+                {/* Column 3: Tasks for the selected proposal */}
                 <div className="space-y-4">
                   <TaskList
                     tasks={tasksForSelectedProposal}

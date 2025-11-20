@@ -42,7 +42,7 @@ export function ProposalList({
         <div>
           <CardTitle className="text-base">Proposals</CardTitle>
           <CardDescription className="text-xs">
-            Propuestas operativas y decisiones que viven como entidades Arkiv.
+            Operational proposals and decisions that live as Arkiv entities.
           </CardDescription>
         </div>
         <Button
@@ -50,33 +50,34 @@ export function ProposalList({
           size="sm"
           onClick={() => void handleReloadClick()}
         >
-          Refrescar
+          Refresh
         </Button>
       </CardHeader>
 
       <CardContent className="space-y-3">
         {loading && (
           <p className="text-xs text-slate-400">
-            Cargando proposals desde Arkiv...
+            Loading proposals from Arkiv...
           </p>
         )}
 
         {error && (
           <p className="text-xs text-red-400">
-            Error al cargar proposals: {error}
+            Error loading proposals: {error}
           </p>
         )}
 
         {!loading && !error && proposals.length === 0 && (
           <p className="text-xs text-slate-400">
-            Todavía no hay proposals para este DAO. Creá la primera al lado 👈
+            There are no proposals for this DAO yet. Create the first one on the
+            side 👈
           </p>
         )}
 
         <div className="space-y-2">
           {proposals.map((proposal, index) => {
-            // Con nuestro tipo ProposalEntity, entityKey es siempre string,
-            // pero dejamos el guard por si acaso.
+            // With our ProposalEntity type, entityKey is always string,
+            // but we keep the guard just in case.
             if (!proposal.entityKey) return null;
 
             const payload = proposal.payload;
@@ -125,8 +126,8 @@ export function ProposalList({
 
                     {createdAt && (
                       <p className="text-[10px] text-slate-500">
-                        Creada:{" "}
-                        {createdAt.toLocaleString("es-AR", {
+                        Created:{" "}
+                        {createdAt.toLocaleString("en-US", {
                           dateStyle: "short",
                           timeStyle: "short",
                         })}

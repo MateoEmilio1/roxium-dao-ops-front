@@ -33,9 +33,9 @@ export function DaoList({ daos, loading, error, onReload }: DaoListProps) {
     <Card className="border-white/10 bg-black/40">
       <CardHeader className="flex flex-row items-center justify-between gap-2">
         <div>
-          <CardTitle className="text-base">DAOs on-chain</CardTitle>
+          <CardTitle className="text-base">On-chain DAOs</CardTitle>
           <CardDescription className="text-xs">
-            DAOs registradas en Arkiv a través del backend de RoxiumLabs.
+            DAOs registered in Arkiv through the RoxiumLabs backend.
           </CardDescription>
         </div>
         <Button
@@ -43,23 +43,22 @@ export function DaoList({ daos, loading, error, onReload }: DaoListProps) {
           size="sm"
           onClick={() => void handleReloadClick()}
         >
-          Refrescar
+          Refresh
         </Button>
       </CardHeader>
 
       <CardContent className="space-y-3">
         {loading && (
-          <p className="text-xs text-slate-400">Cargando DAOs desde Arkiv...</p>
+          <p className="text-xs text-slate-400">Loading DAOs from Arkiv...</p>
         )}
 
         {error && (
-          <p className="text-xs text-red-400">Error al cargar DAOs: {error}</p>
+          <p className="text-xs text-red-400">Error loading DAOs: {error}</p>
         )}
 
         {!loading && !error && daos.length === 0 && (
           <p className="text-xs text-slate-400">
-            Todavía no hay DAOs creadas. Usá el formulario para crear la primera
-            🚀
+            There are no DAOs yet. Use the form to create the first one 🚀
           </p>
         )}
 
@@ -69,7 +68,7 @@ export function DaoList({ daos, loading, error, onReload }: DaoListProps) {
             const attrs = dao.attributes ?? {};
             if (!payload) return null;
 
-            const name = payload.name ?? "(DAO sin nombre)";
+            const name = payload.name ?? "(DAO without name)";
             const description = payload.description ?? "";
             const createdAt = payload.createdAt
               ? new Date(payload.createdAt)
@@ -77,7 +76,7 @@ export function DaoList({ daos, loading, error, onReload }: DaoListProps) {
 
             const daoKey = dao.entityKey ?? null;
 
-            // key estable: si tenemos id lo usamos, si no, el índice
+            // stable key: if we have an id we use it, otherwise the index
             const stableKey =
               typeof payload.id !== "undefined"
                 ? `dao-${payload.id}`
@@ -114,7 +113,7 @@ export function DaoList({ daos, loading, error, onReload }: DaoListProps) {
 
                     {createdAt && (
                       <p className="text-[10px] text-slate-500">
-                        Creado:{" "}
+                        Created:{" "}
                         {createdAt.toLocaleString("es-AR", {
                           dateStyle: "short",
                           timeStyle: "short",
@@ -126,11 +125,11 @@ export function DaoList({ daos, loading, error, onReload }: DaoListProps) {
                   <div className="flex items-start justify-end">
                     {daoKey ? (
                       <Button asChild variant="outline" size="sm">
-                        <Link href={`/daos/${daoKey}`}>Ver board</Link>
+                        <Link href={`/daos/${daoKey}`}>View board</Link>
                       </Button>
                     ) : (
                       <Button variant="outline" size="sm" disabled>
-                        Ver board (sin entityKey)
+                        View board (no entityKey)
                       </Button>
                     )}
                   </div>

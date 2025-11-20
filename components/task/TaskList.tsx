@@ -22,25 +22,23 @@ export function TaskList({ tasks, loading, error }: TaskListProps) {
       <CardHeader>
         <CardTitle className="text-base">Tasks</CardTitle>
         <CardDescription className="text-xs">
-          Lista de tasks vinculadas a la proposal seleccionada.
+          List of tasks linked to the selected proposal.
         </CardDescription>
       </CardHeader>
 
       <CardContent className="space-y-3">
         {loading && (
-          <p className="text-xs text-slate-400">
-            Cargando tasks desde Arkiv...
-          </p>
+          <p className="text-xs text-slate-400">Loading tasks from Arkiv...</p>
         )}
 
         {error && (
-          <p className="text-xs text-red-400">Error al cargar tasks: {error}</p>
+          <p className="text-xs text-red-400">Error loading tasks: {error}</p>
         )}
 
         {!loading && !error && tasks.length === 0 && (
           <p className="text-xs text-slate-400">
-            Esta proposal todavía no tiene tasks. Creá la primera a la derecha
-            👉
+            This proposal doesn&apos;t have any tasks yet. Create the first one
+            on the right 👉
           </p>
         )}
 
@@ -86,8 +84,8 @@ export function TaskList({ tasks, loading, error }: TaskListProps) {
 
                     {createdAt && (
                       <p className="text-[10px] text-slate-500">
-                        Creada:{" "}
-                        {createdAt.toLocaleString("es-AR", {
+                        Created:{" "}
+                        {createdAt.toLocaleString("en-US", {
                           dateStyle: "short",
                           timeStyle: "short",
                         })}
