@@ -1,6 +1,6 @@
 "use client";
 
-import type { ProposalEntity } from "@/services/arkivTypes";
+import type { ProposalEntity } from "@/services/daoService";
 import {
   Card,
   CardHeader,
@@ -53,6 +53,7 @@ export function ProposalList({
           Refrescar
         </Button>
       </CardHeader>
+
       <CardContent className="space-y-3">
         {loading && (
           <p className="text-xs text-slate-400">
@@ -74,9 +75,9 @@ export function ProposalList({
 
         <div className="space-y-2">
           {proposals.map((proposal, index) => {
-            if (!proposal.entityKey) {
-              return null;
-            }
+            // Con nuestro tipo ProposalEntity, entityKey es siempre string,
+            // pero dejamos el guard por si acaso.
+            if (!proposal.entityKey) return null;
 
             const payload = proposal.payload;
             if (!payload) return null;
@@ -88,7 +89,7 @@ export function ProposalList({
 
             return (
               <button
-                key={`${proposal.entityKey}-${index}`} // ✅ key única
+                key={`${proposal.entityKey}-${index}`}
                 type="button"
                 onClick={() => onSelectProposal(proposal.entityKey)}
                 className={[
@@ -108,17 +109,20 @@ export function ProposalList({
                         variant="outline"
                         className="border-slate-600 text-[10px] uppercase tracking-[0.16em] text-slate-300"
                       >
-                        {payload.status}
+                        {payload.status ?? "open"}
                       </Badge>
                     </div>
+
                     {payload.description && (
                       <p className="mt-1 text-[11px] text-slate-400 line-clamp-2">
                         {payload.description}
                       </p>
                     )}
+
                     <p className="mt-1 font-mono text-[10px] text-emerald-300/80 break-all">
                       {proposal.entityKey}
                     </p>
+
                     {createdAt && (
                       <p className="text-[10px] text-slate-500">
                         Creada:{" "}
@@ -129,6 +133,7 @@ export function ProposalList({
                       </p>
                     )}
                   </div>
+
                   {payload.budget != null && (
                     <div className="text-right text-[11px] text-emerald-300">
                       Budget

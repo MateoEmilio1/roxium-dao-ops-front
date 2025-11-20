@@ -1,6 +1,6 @@
 "use client";
 
-import type { TaskEntity } from "@/services/arkivTypes";
+import type { TaskEntity } from "@/services/daoService";
 import {
   Card,
   CardHeader,
@@ -25,6 +25,7 @@ export function TaskList({ tasks, loading, error }: TaskListProps) {
           Lista de tasks vinculadas a la proposal seleccionada.
         </CardDescription>
       </CardHeader>
+
       <CardContent className="space-y-3">
         {loading && (
           <p className="text-xs text-slate-400">
@@ -45,9 +46,7 @@ export function TaskList({ tasks, loading, error }: TaskListProps) {
 
         <div className="space-y-2">
           {tasks.map((task, index) => {
-            if (!task.entityKey) {
-              return null;
-            }
+            if (!task.entityKey) return null;
 
             const payload = task.payload;
             if (!payload) return null;
@@ -58,7 +57,7 @@ export function TaskList({ tasks, loading, error }: TaskListProps) {
 
             return (
               <div
-                key={`${task.entityKey}-${index}`} // ✅ key única
+                key={`${task.entityKey}-${index}`}
                 className="rounded-md border border-slate-800/80 bg-black/60 p-3 text-xs sm:text-sm"
               >
                 <div className="flex items-start justify-between gap-2">
@@ -71,17 +70,20 @@ export function TaskList({ tasks, loading, error }: TaskListProps) {
                         variant="outline"
                         className="border-slate-600 text-[10px] uppercase tracking-[0.16em] text-slate-300"
                       >
-                        {payload.status}
+                        {payload.status ?? "open"}
                       </Badge>
                     </div>
+
                     {payload.description && (
                       <p className="mt-1 text-[11px] text-slate-400">
                         {payload.description}
                       </p>
                     )}
+
                     <p className="mt-1 font-mono text-[10px] text-emerald-300/80 break-all">
                       {task.entityKey}
                     </p>
+
                     {createdAt && (
                       <p className="text-[10px] text-slate-500">
                         Creada:{" "}
@@ -91,7 +93,15 @@ export function TaskList({ tasks, loading, error }: TaskListProps) {
                         })}
                       </p>
                     )}
+
+                    <p className="mt-1 text-[10px] text-slate-500">
+                      Proposal key:{" "}
+                      <span className="font-mono break-all">
+                        {payload.proposalKey}
+                      </span>
+                    </p>
                   </div>
+
                   {payload.budget != null && (
                     <div className="text-right text-[11px] text-emerald-300">
                       Budget

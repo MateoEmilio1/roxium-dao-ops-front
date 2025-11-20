@@ -15,6 +15,9 @@ import type {
   DaoBoardResponse,
   DaoDetailResponse,
   DaoListResponse,
+  DaoEntity,
+  ProposalEntity,
+  TaskEntity,
 } from "@/services/daoService";
 
 // Helper para mensajes de error sin usar `any`
@@ -28,7 +31,7 @@ function getErrorMessage(error: unknown): string {
 
 export interface UseDaosResult {
   data: DaoListResponse | null;
-  daos: DaoListResponse["daos"];
+  daos: DaoEntity[];
   loading: boolean;
   error: string | null;
   refetch: () => Promise<void>;
@@ -71,7 +74,7 @@ export function useDaos(): UseDaosResult {
 
 export interface UseDaoDetailResult {
   data: DaoDetailResponse | null;
-  dao: DaoDetailResponse["dao"] | null;
+  dao: DaoEntity | null;
   memberships: DaoDetailResponse["memberships"];
   loading: boolean;
   error: string | null;
@@ -118,9 +121,9 @@ export function useDaoDetail(daoKey: string | null): UseDaoDetailResult {
 
 export interface UseDaoBoardResult {
   data: DaoBoardResponse | null;
-  dao: DaoBoardResponse["dao"] | null;
-  proposals: DaoBoardResponse["proposals"];
-  tasks: DaoBoardResponse["tasks"];
+  dao: DaoEntity | null;
+  proposals: ProposalEntity[];
+  tasks: TaskEntity[];
   loading: boolean;
   error: string | null;
   refetch: () => Promise<void>;
@@ -128,28 +131,21 @@ export interface UseDaoBoardResult {
 
 export function useDaoBoard(daoKey: string | null): UseDaoBoardResult {
   const [data, setData] = useState<DaoBoardResponse | null>(null);
-  const [dao, setDao] = useState<DaoBoardResponse["dao"] | null>(null);
-  const [proposals, setProposals] = useState<DaoBoardResponse["proposals"]>([]);
-  const [tasks, setTasks] = useState<DaoBoardResponse["tasks"]>([]);
+  const [dao, setDao] = useState<DaoEntity | null>(null);
+  const [proposals, setProposals] = useState<ProposalEntity[]>([]);
+  const [tasks, setTasks] = useState<TaskEntity[]>([]);
   const [loading, setLoading] = useState<boolean>(Boolean(daoKey));
   const [error, setError] = useState<string | null>(null);
 
   const fetchBoard = useCallback(async () => {
-    // 👇 defensa: si no hay daoKey todavía, no hacemos request
-    if (!daoKey) {
-      return;
-    }
+    if (!daoKey) return;
 
     try {
       setLoading(true);
       setError(null);
 
       const res = await getDaoBoard(daoKey);
-
-      // Guardamos el response crudo por si lo querés usar
       setData(res);
-
-      // Y también “planchamos” los campos que usan los componentes
       setDao(res.dao ?? null);
       setProposals(res.proposals ?? []);
       setTasks(res.tasks ?? []);
@@ -158,7 +154,6 @@ export function useDaoBoard(daoKey: string | null): UseDaoBoardResult {
       console.error("useDaoBoard error:", err);
       setError(message);
 
-      // En caso de error, reseteamos los datos para evitar basura
       setData(null);
       setDao(null);
       setProposals([]);

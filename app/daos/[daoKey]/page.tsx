@@ -1,51 +1,50 @@
+// app/daos/[daoKey]/page.tsx
 "use client";
 
 import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 
 import { useDaoBoard } from "@/hooks/useDaos";
+
 import { DaoBoardHeader } from "@/components/dao/DaoBoardHeader";
 import { ProposalCreateForm } from "@/components/proposal/ProposalCreateForm";
 import { ProposalList } from "@/components/proposal/ProposalList";
 import { TaskCreateForm } from "@/components/task/TaskCreateForm";
 import { TaskList } from "@/components/task/TaskList";
 
-// Ajustá estos si están en otro path
 import { Container } from "@/components/common/Container";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 
 export default function DaoBoardPage() {
-  // ✅ En Next 16, en componentes client se usa useParams()
+  // ✅ En app router usamos useParams en componentes client
   const params = useParams<{ daoKey?: string }>();
   const daoKey = params.daoKey ?? null;
 
-  // Hook que trae DAO + proposals + tasks desde tu backend / Arkiv
+  // DAO + proposals + tasks desde el backend / Arkiv
   const { dao, proposals, tasks, loading, error, refetch } =
     useDaoBoard(daoKey);
 
-  // Sólo guardamos lo que el usuario selecciona explícitamente
+  // Sólo guardamos lo que el user selecciona explícitamente
   const [userSelectedProposalKey, setUserSelectedProposalKey] = useState<
     string | null
   >(null);
 
-  // Derivamos la proposal seleccionada:
-  // - si el usuario eligió una → esa
-  // - si no eligió ninguna → primera proposal disponible
+  // Proposal seleccionada (user → primera → null)
   const selectedProposalKey = useMemo<string | null>(() => {
     if (userSelectedProposalKey) return userSelectedProposalKey;
-    if (proposals.length > 0) return proposals[0].entityKey;
+    if (proposals.length > 0) {
+      return proposals[0].entityKey;
+    }
     return null;
   }, [userSelectedProposalKey, proposals]);
 
-  // Filtrar tasks por la proposal seleccionada
+  // Tasks filtradas por proposalKey
   const tasksForSelectedProposal = useMemo(
     () =>
       selectedProposalKey
         ? tasks.filter(
-            (task) =>
-              task.payload !== null &&
-              task.payload.proposalKey === selectedProposalKey
+            (task) => task.payload?.proposalKey === selectedProposalKey
           )
         : [],
     [tasks, selectedProposalKey]
@@ -55,7 +54,7 @@ export default function DaoBoardPage() {
     await refetch();
   }
 
-  // Si por algún motivo daoKey no está en la URL
+  // Si no hay daoKey en la URL
   if (!daoKey) {
     return (
       <div className="flex min-h-screen flex-col bg-[#050816] text-slate-100">
@@ -71,6 +70,8 @@ export default function DaoBoardPage() {
       </div>
     );
   }
+
+  const hasDao = !!dao && !!dao.payload;
 
   return (
     <div className="flex min-h-screen flex-col bg-[#050816] text-slate-100">
@@ -90,9 +91,17 @@ export default function DaoBoardPage() {
             </p>
           </div>
 
-          <div className="mb-6">
-            <DaoBoardHeader dao={dao} />
-          </div>
+          {!hasDao && loading && (
+            <p className="mb-4 text-xs text-slate-400">
+              Cargando información del DAO desde Arkiv…
+            </p>
+          )}
+
+          {!hasDao && !loading && !error && (
+            <p className="mb-4 text-xs text-red-400">
+              No se encontró información del DAO en Arkiv.
+            </p>
+          )}
 
           {error && (
             <p className="mb-4 text-xs text-red-400">
@@ -100,34 +109,42 @@ export default function DaoBoardPage() {
             </p>
           )}
 
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.2fr)_minmax(0,1.1fr)]">
-            {/* Columna 1: Crear Proposal */}
-            <ProposalCreateForm daoKey={daoKey} onCreated={handleReload} />
+          {hasDao && (
+            <>
+              <div className="mb-6">
+                <DaoBoardHeader dao={dao} />
+              </div>
 
-            {/* Columna 2: Lista de Proposals */}
-            <ProposalList
-              proposals={proposals}
-              loading={loading}
-              error={error}
-              selectedProposalKey={selectedProposalKey}
-              onSelectProposal={setUserSelectedProposalKey}
-              onReload={handleReload}
-            />
+              <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.2fr)_minmax(0,1.1fr)]">
+                {/* Columna 1: Crear Proposal */}
+                <ProposalCreateForm daoKey={daoKey} onCreated={handleReload} />
 
-            {/* Columna 3: Tasks de la proposal seleccionada */}
-            <div className="space-y-4">
-              <TaskList
-                tasks={tasksForSelectedProposal}
-                loading={loading}
-                error={error}
-              />
-              <TaskCreateForm
-                daoKey={daoKey}
-                proposalKey={selectedProposalKey}
-                onCreated={handleReload}
-              />
-            </div>
-          </div>
+                {/* Columna 2: Lista de Proposals */}
+                <ProposalList
+                  proposals={proposals}
+                  loading={loading}
+                  error={error}
+                  selectedProposalKey={selectedProposalKey}
+                  onSelectProposal={setUserSelectedProposalKey}
+                  onReload={handleReload}
+                />
+
+                {/* Columna 3: Tasks de la proposal seleccionada */}
+                <div className="space-y-4">
+                  <TaskList
+                    tasks={tasksForSelectedProposal}
+                    loading={loading}
+                    error={error}
+                  />
+                  <TaskCreateForm
+                    daoKey={daoKey}
+                    proposalKey={selectedProposalKey}
+                    onCreated={handleReload}
+                  />
+                </div>
+              </div>
+            </>
+          )}
         </Container>
       </main>
       <SiteFooter />

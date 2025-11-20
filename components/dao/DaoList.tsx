@@ -1,7 +1,8 @@
+// components/dao/DaoList.tsx
 "use client";
 
 import Link from "next/link";
-import type { DaoEntity } from "@/services/daoService"; // ajustá el import si tu tipo está en otro archivo
+import type { DaoEntity } from "@/services/daoService";
 import {
   Card,
   CardHeader,
@@ -64,9 +65,6 @@ export function DaoList({ daos, loading, error, onReload }: DaoListProps) {
 
         <div className="space-y-2">
           {daos.map((dao, index) => {
-            // ⚠️ IMPORTANTE:
-            // Tu JSON actual tiene: attributes, payload, expiresAtBlock
-            // NO tiene entityKey, así que trabajamos solo con payload + attributes
             const payload = dao.payload;
             const attrs = dao.attributes ?? {};
             if (!payload) return null;
@@ -77,15 +75,13 @@ export function DaoList({ daos, loading, error, onReload }: DaoListProps) {
               ? new Date(payload.createdAt)
               : null;
 
-            // Usamos payload.id como key estable (viene del backend)
+            const daoKey = dao.entityKey ?? null;
+
+            // key estable: si tenemos id lo usamos, si no, el índice
             const stableKey =
               typeof payload.id !== "undefined"
                 ? `dao-${payload.id}`
                 : `dao-${index}`;
-
-            // Si en el futuro agregás entityKey en el backend, lo podrías leer como:
-            // const daoKey = dao.entityKey ?? null;
-            // y usar daoKey en el Link
 
             return (
               <div
@@ -112,7 +108,6 @@ export function DaoList({ daos, loading, error, onReload }: DaoListProps) {
                       </p>
                     )}
 
-                    {/* Debug / metadata */}
                     <p className="font-mono text-[10px] text-emerald-300/80 break-all">
                       owner: {attrs.ownerAddress ?? payload.ownerAddress}
                     </p>
@@ -128,14 +123,16 @@ export function DaoList({ daos, loading, error, onReload }: DaoListProps) {
                     )}
                   </div>
 
-                  {/* 👉 Botón de board:
-                      Por ahora lo dejo deshabilitado porque no tenemos entityKey.
-                      Apenas el backend agregue `entityKey`, activamos el Link.
-                  */}
                   <div className="flex items-start justify-end">
-                    <Button variant="outline" size="sm" disabled>
-                      Ver board (falta entityKey)
-                    </Button>
+                    {daoKey ? (
+                      <Button asChild variant="outline" size="sm">
+                        <Link href={`/daos/${daoKey}`}>Ver board</Link>
+                      </Button>
+                    ) : (
+                      <Button variant="outline" size="sm" disabled>
+                        Ver board (sin entityKey)
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>
