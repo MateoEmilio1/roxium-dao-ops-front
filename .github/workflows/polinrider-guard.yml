@@ -1,0 +1,52 @@
+"on":
+  # Sin filtro de ramas a proposito: corre en TODAS (feature, staging, main)
+  # y en TODOS los PRs, asi el chequeo pasa antes de llegar a produccion.
+  push:
+  pull_request:
+  # Barrido semanal: atrapa el payload si entra por un merge o rebase viejo
+  # sin que nadie haya pusheado.
+  schedule:
+    - cron: "0 9 * * 1"
+
+name: polinrider-guard
+
+jobs:
+  scan:
+    # Este es el nombre que vas a elegir como "status check" en el ruleset.
+    name: polinrider-guard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Escanear archivos de configuracion
+        shell: bash
+        run: |
+          set -uo pipefail
+          BAD=0
+          while IFS= read -r f; do
+            [ -f "$f" ] || continue
+            reasons=""
+            awk 'length($0)>400{found=1} END{exit !found}' "$f" \
+              && reasons="$reasons linea-larga"
+            grep -q '_\$_[0-9a-zA-Z]\{3,\}' "$f" \
+              && reasons="$reasons _\$_"
+            grep -q 'createRequire' "$f" \
+              && reasons="$reasons createRequire"
+            grep -qE "global\s*\[\s*['\"]" "$f" \
+              && reasons="$reasons global[]"
+            grep -qE 'trongrid|bsc-dataseed|bsc-rpc\.publicnode' "$f" \
+              && reasons="$reasons C2-blockchain"
+            if [ -n "$reasons" ]; then
+              BAD=1
+              echo "::error file=$f::Config con inyeccion PolinRider ($(wc -c < "$f") bytes) — señales:$reasons"
+            fi
+          done < <(find . \
+            \( -name "*.config.js"  -o -name "*.config.mjs" -o -name "*.config.cjs" \
+            -o -name "*.config.ts"  -o -name "*.config.mts" -o -name "tasks.json" \) \
+            -not -path "./node_modules/*" -not -path "./.git/*" -not -path "./.next/*")
+
+          if [ "$BAD" -eq 1 ]; then
+            echo "Se encontraron configs inyectados. Ver github.com/orgs/community/discussions/188732"
+            exit 1
+          fi
+          echo "Todos los archivos de configuracion estan limpios."
